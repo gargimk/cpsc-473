@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="gradProj">
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script type="text/javascript" src="clientJS.js"></script>
+
+</head>
+
+<body>
+    <header>
+        <div class="navbar-fixed">
+            <nav class="white">
+                <ul class="left hide-on-med-and-down">
+                    <div class="search-wrapper card cyan darken-3">
+                        <form>
+                            <div class="input-field">
+                                <input id="search" type="search" required ng-model="search">
+                                <label for="search"><i class="material-icons">search</i></label>
+                                <i class="material-icons">close</i>
+                            </div>
+                        </form>
+                </ul>
+                <a class="brand-logo center cyan-text text-darken-3">RateThyProf</a>
+
+                <ul class="right hide-on-med-and-down">
+                    <div class="nav-wrapper">
+                        <li><a ng-controller="signupCtrl" class="waves-effect waves-light btn cyan darken-3 signup" ng-click="signup(form)">Create Account</a>
+                            <a ng-controller="logoutCtrl" class="waves-effect waves-light btn cyan darken-3 logout" ng-click="logout()">Logout</a></li>
+                    </div>
+                </ul>
+            </nav>
+            </div>
+
+    </header>
+    <main ng-controller="appCtrl">
+
+        <div class="dashboard">
+            <div class="row">
+                <div class="col s3">
+                    <div class="card dashboardCard">
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <img class="activator" src="image/professor.jpg" width="250" height="250">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title cyan-text text-darken-3 center"><h5>Find/Add to Rate the Professor</h5></span>
+                        </div>
+                        <div class="card-reveal">
+                            <h5><span class="card-title  cyan-text text-darken-3">Find/Add the Professor<i class="material-icons right">close</i></span></h5>
+                            <br>
+                            <div class="row">
+                                <form class="col s12">
+                                    <div class="row">
+                                        <div class="input-field col s11">
+                                            <p><span class="card-title grey-text text-darken-4">Find and Rate the professor
+                                            <button class="waves-effect waves-light btn cyan darken-3" ng-click="findProfessor()">Find</button>
+                                            <br>
+                                            <br>
+                                            <p><span class="card-title grey-text text-darken-4">Add the professor
+                                         <a class="btn-floating btn-large waves-effect waves-light cyan darken-3" ng-click="addProfessorModal()"><i class="material-icons">add</i></a></span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s3">
+                    <div class="card dashboardCard">
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <img class="activator" src="image/university.jpg" width="250" height="250">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title cyan-text text-darken-3 center"><h5>Find/Add the University</h5></span>
+                        </div>
+                        <div class="card-reveal">
+                            <span class="card-title cyan-text text-darken-3">Find the University<i class="material-icons right">close</i></span>
+                            <div class="row">
+                                <br>
+                                <form class="col s12">
+                                    <div class="row">
+                                        <div class="input-field col s10">
+                                            <p><span class="card-title grey-text text-darken-4">Find the university
+                                            <button class="waves-effect waves-light btn cyan darken-3" ng-click="findUniversity()">Find</button>
+                                            <br>
+                                            <br> 
+                                            <p><span class="card-title grey-text text-darken-4">Add the university 
+                                         <a class="btn-floating btn-large waves-effect waves-light cyan darken-3"><i class="material-icons" ng-click="addUniversityModal()">add</i></a></span>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Find professor page-->
+        <div class="findProfessors findProfUni">
+            <span class="white-text centerAlign"><h1>Professors</h1></span>
+            <ul class="collection">
+                <li class="collection-item avatar" ng-repeat="item in results|filter:search">
+                    <i class="material-icons circle">perm_identity</i>
+                    <span class="title"><a ng-click="rateProf(item)"><strong><em>{{item.name}}</em></strong></a></span>
+                    <p>{{item.university}}
+                        <br> {{item.department}}
+                    </p>
+                    <a class="secondary-content">
+                        <div class="rating">
+                            <i class="material-icons" ng-repeat="t in getstars(item.rating) track by $index">star</i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <button class="waves-effect waves-light btn white cyan-text text-darken-3 centerButton" ng-click="backToHome()">Back</button>
+        </div>
+
+        <!--Find university page-->
+        <div class="findUniversity findProfUni">
+            <span class="white-text centerAlign"><h1>The list of Universities</h1></span>
+            <ul class="collection">
+                <li class="collection-item avatar" ng-repeat="item in results|filter:search">
+                    <i class="material-icons circle">school</i>
+                    <span class="title">{{item.name}}</span>
+                    <p>{{item.city}}
+                        <br> {{item.state}}
+                    </p>
+                </li>
+            </ul>
+            <button class="waves-effect waves-light btn white cyan-text text-darken-3 centerButton" ng-click="backToHome()">Back</button>
+        </div>
+
+        <!-- Signup Page Structure -->
+        <div id="signupPage" class="login" ng-controller="signupCtrl">
+            <h1 class="white-text">Create Account</h1>
+            <div class="row">
+                <form class="col s12" name="form" class="css-form" novalidate id="signUpForm">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix white_color">person</i>
+                            <input id="icon_prefix" type="text" class="validate fullname white_color" ng-model="newUser.name" name="nuName" required=""
+                            />
+                            <label for="icon_prefix">Fullname</label>
+                            <br />
+                            <div ng-show="form.$submitted || form.nuName.$touched">
+                                <div ng-show="form.nuName.$error.required" class="white-text">Required Field: Fullname</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix white_color">account_circle</i>
+                            <input id="icon_prefix" type="text" class="validate username white_color" ng-model="newUser.id" name="nuId" required=""/>
+                            <label for="icon_prefix">Username</label>
+                            <!--<span ng-show="form.nuId.$pending.username" class="white-text">Checking if this name is available...</span>
+                            <span ng-show="form.nuId.$error.username" class="white-text">This username is already taken!</span>-->
+                            <br />
+                            <div ng-show="form.$submitted || form.nuId.$touched">
+                                <div ng-show="form.nuId.$error.required" class="white-text">Required Field: Username</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix white_color">vpn_key</i>
+                            <input id="icon_vpn_key" type="password" class="validate password white_color" ng-model="newUser.password" name="nuPassword"
+                            required="" />
+                            <label for="icon_vpn_key">Password</label>
+                            <br />
+                            <div ng-show="form.$submitted || form.nuPassword.$touched">
+                                <div ng-show="form.nuPassword.$error.required" class="white-text">Required Field: Password</div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit" value="Sign Up" class="waves-effect waves-cyan white cyan-text text-darken-3 btn signupButton" ng-click="addNewUser(newUser)"
+                    />
+                    <input type="button" value="Cancel" class="modal-close waves-effect waves-cyan white cyan-text text-darken-3 btn cancleButton"
+                    ng-click="backToLogin(form)" />
+                </form>
+            </div>
+        </div>
+
+
+        <!-- Login Page Structure -->
+        <div id="loginPage" class="login" ng-controller="loginCtrl">
+            <div class="white-text">
+                <h1>Login</h1></div>
+            <div class="row">
+                <form class="col s12" name="loginform" class="css-form" novalidate id="loginForm">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix white_color">account_circle</i>
+                            <input id="icon_prefix" type="text" class="validate username white-text" ng-model="user.id" name="uId" required="" />
+                            <label for="icon_prefix white-text">Username</label>
+                            <div ng-show="loginform.$submitted || loginform.uId.$touched">
+                                <div ng-show="loginform.uId.$error.required" class="white-text">Required Field: Username</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix white_color">vpn_key</i>
+                            <input id="icon_vpn_key" type="password" class="validate password white-text" ng-model="user.password" name="uPassword" required="">
+                            <label for="icon_vpn_key white">Password</label>
+                            <div ng-show="loginform.$submitted || loginform.uPassword.$touched">
+                                <div ng-show="loginform.uPassword.$error.required" class="white-text">Required Field: Password</div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit" value="Sign In" class="waves-effect waves-white white cyan-text text-darken-3 btn loginButton" ng-click="login(user)"
+                    />
+                </form>
+            </div>
+        </div>
+
+
+        <!--Add Professor Modal Structure-->
+        <div id="addProfModal" class="modal" ng-controller="addCtrl">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="cyan-text text-darken-3">
+                        <h4>Add the professor: </h4></div>
+                </div>
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">person</i>
+                                <input id="prof_name" type="text" class="validate name" ng-model="prof.name" required>
+                                <label for="prof_name">Name</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">school</i>
+                                <label for="uni">University</label>
+                                <br>
+                                <br>
+                                <select name="uni" id="uni" ng-model="prof.university" class="browser-default">
+                                    <option ng-repeat="option in uniData.availableOptions" value="{{option.name}}" ng-model="prof.uni">{{option.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">school</i>
+                                <label for="dept">Department</label>
+                                <br>
+                                <br>
+                                <select name="dept" id="dept" ng-model="prof.department" class="browser-default">
+                                    <option ng-repeat="option in data.availableOptions" value="{{option.name}}" ng-model="prof.dept">{{option.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <a class=" modal-action modal-close waves-effect waves-green btn-flat" ng-click="addProfessor(prof)">OK</a>
+                <a class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+            </div>
+        </div>
+
+        <!--Rate Professor Modal Structure-->
+        <div id="rateProfModal" class="modal">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="cyan-text text-darken-3">
+                        <h4>Rate the professor: </h4></div>
+                </div>
+                <div class="row">
+                    <h5>Name: {{prof.name}}</h5>
+                    <br>
+                    <h5>University: {{prof.university}}</h5>
+                    <br>
+                    <h5>Department: {{prof.department}}</h5>
+                    <br>
+
+                    <div class="alert alert-success"> <span class="label label-info"><h5>Rating:</h5></span>
+
+                        <div star-rating rating="starRating1" read-only="false" max-rating="10" click="click1(param)" mouse-hover="mouseHover1(param)"
+                        mouse-leave="mouseLeave1(param)"></div><span class="label label-primary">Star Rating: {{starRating1}}/10</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <h5>Average Rating:{{prof.rating}}</h5>
+                    <strong><em>Rated by:</em></strong>
+                    <br>
+                    <strong>User - Rate</strong>
+                    <div ng-repeat="item in prof.ratedBy">
+                        {{item.user}} - {{item.rate}}
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <a class=" modal-action modal-close waves-effect waves-green btn-flat" ng-click="updateProf(prof,starRating1)">OK</a>
+                    <a class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+                </div>
+            </div>
+        </div>
+        <!--Add University Modal Structure-->
+        <div id="addUniModal" class="modal" ng-controller="addCtrl">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="cyan-text text-darken-3">
+                        <h4>Add the University: </h4></div>
+                </div>
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">school</i>
+                                <input id="uni_name" type="text" class="validate name" ng-model="uni.name" required>
+                                <label for="uni_name">Name of university</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">location_city</i>
+                                <input id="uni_city" type="text" class="validate city" ng-model="uni.city" required>
+                                <label for="uni_city">City</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">place</i>
+                                <input id="uni_state" type="text" class="validate state" ng-model="uni.state" required>
+                                <label for="uni_state">State</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class=" modal-action modal-close waves-effect waves-green btn-flat" ng-click="addUniversity(uni)">OK</a>
+                <a class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+            </div>
+        </div>
+
+        <!-- Warning Modal Structure -->
+        <div id="warnModal" class="modal">
+            <div class="modal-content">
+                <h4 class="cyan-text text-darken-3 center">Warning!!</h4>
+                <p><h4 class="warning"></h4></p>
+            </div>
+            <div class="modal-footer">
+                <a class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+            </div>
+        </div>
+
+    </main>
+
+
+</body>
+
+</html>
