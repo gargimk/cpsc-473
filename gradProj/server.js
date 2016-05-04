@@ -21,7 +21,7 @@ server.register(Inert, () => { });
 
 server.route({
     method: 'GET',
-    path: '/',
+    path: '/rateThyProf',
     handler: {
         file: __dirname + '/index.html'
     }
